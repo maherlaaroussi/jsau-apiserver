@@ -3,8 +3,7 @@ let express = require('express')
 const morgan = require('morgan')
 let bodyParser = require('body-parser')
 let fs = require('fs')
-const util = require('util')
-const readFile = util.promisify(require('fs').readFile)
+const fsPromises = fs.promises
 let app = express()
 
 app.use(bodyParser.json())
@@ -24,24 +23,28 @@ app.get('/news/:id', (request, response) => {
     })
 })
 
-// TODO: Check if can get all news
+// FIXME: Get data and no buffer
 app.get('/news', (request, response) => {
     let dir_path = 'data/'
     let ns = []
+    const readF = (filenames) => {
+        return Promise.all(
+            filenames.map((f) => fsPromises.readFile(dir_path + f))
+        )
+    }
     fs.readdir(dir_path, (err, files) => {
         if (err) {
             response.status(404)
+            response.send()
         }
-        files.forEach((file) => {
-            readFile(dir_path + file, (err2, data) => {
-                if (!err) {
-                    console.log(data)
-                    ns.push(data)
-                }
-            }).then(console.log(ns))
-        })
+        readF(files)
+            .then((res) => {
+              response.status(200)
+              response.send(res)
+              console.log(res)
+            })
+            .catch(console.log)
     })
-    response.send(ns)
 })
 
 app.post('/news/:id', (request, response) => {
