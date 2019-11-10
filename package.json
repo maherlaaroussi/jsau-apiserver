@@ -2,6 +2,10 @@
   "name": "jsau-apiserver",
   "version": "1.0.0",
   "description": "ApiServer",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/maherlaaroussi/jsau-apiserver.git"
+  },
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
