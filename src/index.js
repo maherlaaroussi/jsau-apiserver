@@ -27,28 +27,32 @@ app.get('/news/:id', (request, response) => {
 // TODO: Check if can get all news
 app.get('/news', (request, response) => {
     let dir_path = 'data/'
-    let ns = [];
-    fs.readdir(dir_path, function (err, files) {
-      if (err) response.status(404)
-      files.forEach(function (file) {
-        console.log(dir_path + file)
-        readFile(dir_path + file, (err2, data) => {
-            if (!err) {
-              console.log(data)
-              ns.push(data)
-            }
-        }).then(console.log(ns))
-      });
-  });
-  response.send(ns)
+    let ns = []
+    fs.readdir(dir_path, (err, files) => {
+        if (err) {
+            response.status(404)
+        }
+        files.forEach((file) => {
+            readFile(dir_path + file, (err2, data) => {
+                if (!err) {
+                    console.log(data)
+                    ns.push(data)
+                }
+            }).then(console.log(ns))
+        })
+    })
+    response.send(ns)
 })
 
 app.post('/news/:id', (request, response) => {
     let data = JSON.stringify(request.body)
     let name = 'data/' + request.params.id + '.json'
     fs.writeFile(name, data, (err) => {
-        if (err) response.status(409)
-        else response.status(201)
+        if (err) {
+            response.status(409)
+        } else {
+            response.status(201)
+        }
     })
     response.send()
 })
