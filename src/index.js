@@ -24,6 +24,7 @@ app.get('/news/:id', (request, response) => {
     })
 })
 
+// TODO: Check if can get all news
 app.get('/news', (request, response) => {
     let dir_path = 'data/'
     let ns = [];
