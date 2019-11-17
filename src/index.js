@@ -8,7 +8,7 @@ let app = express()
 
 app.use(bodyParser.json())
 app.use(morgan('dev'))
-app.listen(2828)
+let server = app.listen(2828)
 
 app.get('/news/:id', (request, response) => {
     let name = 'data/' + request.params.id + '.json'
@@ -99,3 +99,10 @@ app.delete('/news/:id', (request, response) => {
     })
     response.send()
 })
+
+function stop() {
+    server.close()
+}
+
+module.exports = app
+module.exports.stop = stop

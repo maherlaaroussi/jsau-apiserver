@@ -1,9 +1,14 @@
 'use strict'
 const supertest = require('supertest')
 const should = require('should')
-const server = supertest.agent('http://localhost:2828')
+const app = require('../src/index.js')
+const server = supertest(app)
 
 describe('CRUD Unit', () => {
+
+    after(function() {
+      app.stop()
+    })
 
     it('CREATE', (done) => {
         server
