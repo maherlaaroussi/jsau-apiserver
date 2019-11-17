@@ -23,4 +23,5 @@ test_work:
   script:
     - npm install
     - npm ci
+    - mkdir data
     - script/test.sh
