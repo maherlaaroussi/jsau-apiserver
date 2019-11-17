@@ -21,7 +21,6 @@ app.get('/news/:id', (request, response) => {
     })
 })
 
-// FIXME: Get data and no buffer
 app.get('/news', (request, response) => {
     let dir_path = 'data/'
     const readF = (filenames) => {

@@ -16,10 +16,11 @@ services:
 cache:
   paths:
     - node_modules/
-    - .nyc_output
+    - .nyc_output/
+    - data/
 
 test_work:
   script:
     - npm install
     - npm ci
-    - script/test.js
+    - script/test.sh
