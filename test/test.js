@@ -34,6 +34,8 @@ describe('CRUD Unit', () => {
             })
     })
 
+    // TODO: Add UPDATE test
+
     it('DELETE', (done) => {
         server
             .delete('/news/666')

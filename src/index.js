@@ -60,6 +60,7 @@ app.post('/news(/:id)?', (request, response) => {
     })
 })
 
+// TODO: Improve UPDATE
 app.put('/news/:id', (request, response) => {
     let name = 'data/' + request.params.id + '.json'
     let updated_data = request.body
