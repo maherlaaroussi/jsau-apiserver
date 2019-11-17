@@ -12,7 +12,8 @@
     "start:watch": "nodemon src/",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "script/test.sh"
+    "test": "script/test.sh",
+    "clean": "rm -rf data/ && mkdir data"
   },
   "author": "Maher LAAROUSSI",
   "license": "MIT",

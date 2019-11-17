@@ -19,9 +19,8 @@ cache:
     - .nyc_output/
     - data/
 
-test_work:
+test_api:
   script:
-    - npm install
+    - npm run clean
     - npm ci
-    - mkdir data
     - script/test.sh
