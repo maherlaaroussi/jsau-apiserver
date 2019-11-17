@@ -12,13 +12,11 @@ app.listen(2828)
 
 app.get('/news/:id', (request, response) => {
     let name = 'data/' + request.params.id + '.json'
-    fs.readFile(name, (err, data) => {
+    fs.readFile(name, 'utf8', (err, data) => {
         if (err) {
-            response.status(404)
-            response.send()
+            response.status(404).end()
         } else {
-            response.status(200)
-            response.send(data)
+            response.status(200).json(JSON.parse(data))
         }
     })
 })
@@ -29,35 +27,40 @@ app.get('/news', (request, response) => {
     let ns = []
     const readF = (filenames) => {
         return Promise.all(
-            filenames.map((f) => fsPromises.readFile(dir_path + f))
+            filenames.map((f) => fsPromises.readFile(dir_path + f, 'utf8').then((res) => {
+                res = JSON.parse(res)
+                res.id = f.split(".")[0]
+                return res
+            }))
         )
     }
     fs.readdir(dir_path, (err, files) => {
         if (err) {
-            response.status(404)
-            response.send()
+            response.status(404).end()
         }
         readF(files)
             .then((res) => {
-              response.status(200)
-              response.send(res)
-              console.log(res)
+                response.status(200).json(res)
             })
             .catch(console.log)
     })
 })
 
-app.post('/news/:id', (request, response) => {
-    let data = JSON.stringify(request.body)
-    let name = 'data/' + request.params.id + '.json'
-    fs.writeFile(name, data, (err) => {
-        if (err) {
-            response.status(409)
-        } else {
-            response.status(201)
-        }
+app.post('/news', (request, response) => {
+    fsPromises.readdir('data/', (err, files) => {
+    }).then(function(res) {
+      let data = JSON.stringify(request.body)
+      var name = (res[res.length - 1]) ? (parseInt(res[res.length - 1].split(".")[0]) + 1) : 1
+      name = 'data/' + name + '.json'
+      fs.writeFile(name, data, (err) => {
+          if (err) {
+              response.status(409)
+          } else {
+              response.status(201)
+          }
+      })
+      response.send()
     })
-    response.send()
 })
 
 app.put('/news/:id', (request, response) => {
