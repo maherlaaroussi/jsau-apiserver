@@ -24,12 +24,11 @@ app.get('/news/:id', (request, response) => {
 // FIXME: Get data and no buffer
 app.get('/news', (request, response) => {
     let dir_path = 'data/'
-    let ns = []
     const readF = (filenames) => {
         return Promise.all(
             filenames.map((f) => fsPromises.readFile(dir_path + f, 'utf8').then((res) => {
                 res = JSON.parse(res)
-                res.id = f.split(".")[0]
+                res.id = f.split('.')[0]
                 return res
             }))
         )
@@ -42,24 +41,23 @@ app.get('/news', (request, response) => {
             .then((res) => {
                 response.status(200).json(res)
             })
-            .catch(console.log)
     })
 })
 
-app.post('/news', (request, response) => {
+app.post('/news(/:id)?', (request, response) => {
     fsPromises.readdir('data/', (err, files) => {
-    }).then(function(res) {
-      let data = JSON.stringify(request.body)
-      var name = (res[res.length - 1]) ? (parseInt(res[res.length - 1].split(".")[0]) + 1) : 1
-      name = 'data/' + name + '.json'
-      fs.writeFile(name, data, (err) => {
-          if (err) {
-              response.status(409)
-          } else {
-              response.status(201)
-          }
-      })
-      response.send()
+    }).then((res) => {
+        let data = JSON.stringify(request.body)
+        let name = (request.params.id) ? request.params.id : (res[res.length - 1]) ? (parseInt(res[res.length - 1].split('.')[0]) + 1) : 1
+        name = 'data/' + name + '.json'
+        fs.writeFile(name, data, (err) => {
+            if (err) {
+                response.status(409)
+            } else {
+                response.status(201)
+            }
+        })
+        response.send()
     })
 })
 
