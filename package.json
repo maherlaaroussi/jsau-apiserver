@@ -8,6 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
+    "init": "npm run clean && npm ci",
     "start": "node src/index.js",
     "start:watch": "nodemon src/",
     "lint": "eslint .",

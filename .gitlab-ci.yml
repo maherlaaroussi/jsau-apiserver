@@ -18,6 +18,5 @@ cache:
 
 test_api:
   script:
-    - npm run clean
-    - npm ci
+    - npm run init
     - script/test.sh
